@@ -1,4 +1,4 @@
-grammar grammar;
+grammar Grammar;
 
 program: (statement NEWLINE)* EOF;
 
