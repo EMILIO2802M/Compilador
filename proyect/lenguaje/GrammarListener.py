@@ -35,6 +35,15 @@ class GrammarListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by GrammarParser#type.
+    def enterType(self, ctx:GrammarParser.TypeContext):
+        pass
+
+    # Exit a parse tree produced by GrammarParser#type.
+    def exitType(self, ctx:GrammarParser.TypeContext):
+        pass
+
+
     # Enter a parse tree produced by GrammarParser#print.
     def enterPrint(self, ctx:GrammarParser.PrintContext):
         pass
