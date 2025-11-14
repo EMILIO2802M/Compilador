@@ -7,6 +7,13 @@ class MyVisitor(GrammarVisitor):
         # Inicializa la memoria/entorno donde guardamos variables
         self.memory = {}
 
+    # Visita nuestra programa
+    def visitProgram(self,ctx:GrammarParser.ProgramContext):
+        # Recorre todas las instrucciones dentro del programa
+        for stmt in ctx.statement():
+            self.visit(stmt)
+        return None
+
     # Definimos la asignacion
     def visitAssing(self,ctx:GrammarParser.AssingContext):
         # Se obtiene el tipo de la variable (int, string)
@@ -30,6 +37,19 @@ class MyVisitor(GrammarVisitor):
         # Se almacena en memoria el valor y su tipo
         self.memory[name] = {'value': value, 'type': var_type}
 
+        # Se verifica que la variable exista
+        if name not in self.memory:
+            raise NameError(f"Variable '{name}' no ha sido definida")
+        
+        # Se obtiene el tipo original de la variable
+        var_type = self.memory[name]['type']
+
+        # Se valida que el nuevo valor coincida  con el tipo original
+        if (var_type == 'int' and not isinstance(value, int)) or (var_type == 'string' and not isinstance(value, str)):
+           raise TypeError(f"No se puede asignar un '{type(value).__name__}' a la variable '{name}'")
+        
+        # Se actualiza el valor en memoria
+        self.memory[name]['value'] = value
 
     # Definimos la impresion
     def visitPrint(self,ctx:GrammarParser.PrintContext):
@@ -38,6 +58,32 @@ class MyVisitor(GrammarVisitor):
         # Imprime el valor
         print(value)
 
+    # Definimos el visitor para el if
+    def visitIf_statement(self,ctx:GrammarParser.If_statementContext):
+        # Evaluamos la condicion
+        condition = self.visit(ctx.expr())
+        # Si la condicion es verdadera, ejecuta las instrucciones dentro del if
+        if condition:
+            self.visit(ctx.block())
+        return None
+
+    # Definimos el visitor para el for 
+    def visitFor_statement(self,ctx:GrammarParser.For_statementContext):
+        self.visit(ctx.assing(0))  # Inicializacion
+        # Evaluamos la expresion para el for
+        while self.visit(ctx.expr()):
+            self.visit(ctx.block())  # Bloque de instrucciones
+            self.visit(ctx.assing(1))  # Incremento
+        
+    # Definimos el bloque para evaluarlo
+    def visitBlock(self,ctx:GrammarParser.BlockContext):
+        # Evalua la instruccion dentro del bloque
+        for stmt in ctx.statement():
+            # Visita cada instruccion
+            self.visit(stmt)
+        return None
+
+    
     # Definimos las expresiones
     def visitExpr(self, ctx):
         # Busca si existen IDs
@@ -80,4 +126,17 @@ class MyVisitor(GrammarVisitor):
                 if right == 0:
                     raise ValueError("Division por cero")
                 return left / right
+            # Evaluacion de operadores de comparacion
+            if ctx.op.text == ">":
+                return left > right
+            if ctx.op.text == "<":
+                return left < right
+            if ctx.op.text == ">=":
+                return left >= right
+            if ctx.op.text == "<=":
+                return left <= right
+            if ctx.op.text == "==":
+                return left == right
+            if ctx.op.text == "!=":
+                return left != right
         
