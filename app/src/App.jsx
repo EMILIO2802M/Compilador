@@ -12,12 +12,14 @@ function App() {
     })
   }
 
+  const API_URL = import.meta.env.VITE_API_URL || 'https://compilador-gnk1.onrender.com'
+
   const handleSubmit=async ()=>{
     setLoading(true);
     setOutput(''); //Limpiar salida anterior
     try {
-      const req = await axios.post('https://compilador-gnk1.onrender.com/api/code', code);
-      await setOutput(req.data.output);
+  const req = await axios.post(`${API_URL}/api/code`, code);
+  await setOutput(req.data.output);
     } catch(error){
       console.error("Error al enviar el código: ", error);
       setOutput("Error al procesar la solicitud."); //Mostrar mensaje de error al usuario
