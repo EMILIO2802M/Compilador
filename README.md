@@ -1,1 +1,1 @@
-# Compilador
+# Compilator
