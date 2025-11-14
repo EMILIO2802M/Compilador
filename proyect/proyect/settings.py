@@ -20,16 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u7h4(a!#@py^jpp9gn%kq87-=r6p0jk&hz6k*e(@%^sen1&osp'
+SECRET_KEY = 'django-insecure-q1o5&otr7q=a!q(5!g_$6$%79u=diav+h9i-3@8yvv@ezp40zb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1:5173',
-    'compilador-gnk1.onrender.com'
+    'compilador-q5n8.onrender.com'
+    # Añade aquí el dominio de tu frontend si lo tienes
 ]
-
 
 # Application definition
 
@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'api',
-    'rest_framework',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -57,7 +57,9 @@ MIDDLEWARE = [
 ]
 
 
-CORS_ALLOWED_ALL_ORIGINS = True
+# Cuando CORS_ALLOW_ALL_ORIGINS es True, la lista CORS_ALLOWED_ORIGINS es ignorada.
+# Opcional: si quieres permitir todos los orígenes (no recomendado para producción)
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'proyect.urls'
 
